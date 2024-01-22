@@ -10,6 +10,6 @@ class Entry
       puts "Please enter valid phone number in the format \"+1-xxxxxxxxxx\""
       value = gets.chomp
     end
-    @phone_number = "+1-(#{value[0,3]})-#{value[3,3]}-#{value[6,3]}"
+    @phone_number = "+1-(#{value[0,3]})-#{value[3,3]}-#{value[6,4]}"
   end
 end
