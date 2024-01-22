@@ -55,30 +55,29 @@ class Directory
     puts "New entry added"
   end
 
-  def search_entries   
-    puts "Create entry?"
-    command = gets.chomp.to_i
-    until [1, 0].include?(command) do
-      puts "Please enter valid command"
-      command = gets.chomp.to_i
-    end
-    if command  == 1
-      self.add
-      "New entry added"
+  def search_entries 
+    #allows user to select search by name or by phone number
+    puts "Search by name [0] or phone number [1]?"
+    name_or_number_command = self.two_option_command_selector
+    if name_or_number_command == 0
+      puts "Enter name: "
+      search_name = gets.chomp
+      search_result = entries.find {|entry| entry.name == search_name}
     else
-      "Entry not added"
+      puts "Enter phone number: "
+      search_number = gets.chomp
+      until search_number =~ /^\d{10}$/ do
+        puts "Please enter valid phone number in the format \"+1-xxxxxxxxxx\""
+        search_number = gets.chomp
+      end
+      search_result = entries.find {|entry| entry.phone_number == "+1-(#{search_number[0,3]})-#{search_number[3,3]}-#{search_number[6,3]}"}
     end
-    puts "Update this entry?"
-    command = gets.chomp.to_i
-    until [1, 0].include?(command) do
-      puts "Please enter valid command"
-      command = gets.chomp.to_i
-    end
-    if command  == 1
-      self.add
-      "New entry added"
+    #if the search result is nil (the default output for Enumberable#find if no matching element was found), prints "Entry not found", else prints first matched entry
+    if search_result == nil
+      puts "Entry not found"
     else
-      "Entry not added"
+      puts "Entry found in directory: "
+      puts "#{search_result.name}, #{search_result.phone_number}"
     end
   end
   #If entries present, iterates over entries array and prints content. If no entries present, prints informational message
@@ -97,4 +96,14 @@ class Directory
     entries.clear()
     puts "All entries deleted"
   end
+
+  def two_option_command_selector
+    command = gets.chomp.to_i
+    until [1, 0].include?(command) do
+      puts "Please enter valid command"
+      command = gets.chomp.to_i
+    end
+    return command
+  end
+
 end
