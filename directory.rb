@@ -1,8 +1,10 @@
 require "./entry.rb"
 class Directory
+  #create array variable for storing the entries
   def entries
     @entries ||= []
   end 
+  #print out informational message about available commands
   def help
     puts "Commands: "
     puts "1 - add entry"
@@ -11,15 +13,18 @@ class Directory
     puts "4 - delete all entries"
     puts "5 - exit app"
   end 
-
+  #main method of class
   def run
     self.help
     command = gets.chomp.to_i
+    #check validity of entered command, prompt user again if invalid
     until [1, 2, 3, 4, 5].include?(command) do
       puts "Please enter valid command"
       command = gets.chomp.to_i
     end
+    #while loop that lasts until the command 5 (exit app) is entered
     while command != 5
+      #case statement for executing method depending on user inputted command
       case command
       when 1
         self.add
@@ -30,6 +35,7 @@ class Directory
       when 4
         self.delete_all_entries
       end
+      #prompt to enter next command with validity check
       puts "Enter next command: "
       command = gets.chomp.to_i
       until [1, 2, 3, 4, 5, 6].include?(command) do
@@ -39,7 +45,7 @@ class Directory
     end
     puts "Yellow pages app closed."
   end
-
+  #add method utilizing the Entry custom class
   def add
     puts "Enter name: "
     name = gets.chomp
@@ -75,6 +81,7 @@ class Directory
       "Entry not added"
     end
   end
+  #If entries present, iterates over entries array and prints content. If no entries present, prints informational message
   def print_all_entries
     unless entries == []
       puts "Current entries: "
@@ -85,9 +92,7 @@ class Directory
       puts "Directory empty"
     end
   end
-
-
-
+  #empties entries array using the array method Array#clear()
   def delete_all_entries
     entries.clear()
     puts "All entries deleted"
